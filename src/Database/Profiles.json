@@ -1,0 +1,13 @@
+ {
+	"AccessID-Shared with customer": {
+        "Name"			: "Customer's Name",
+        "Social-Media Entries" 	: "url"
+    },
+
+	"1297": {
+        "Name"	: "Ahmad Hassan Mirza",
+        "Instagram"	: "https://www.instagram.com/ahm_adhm/",
+        "Facebook"	: "https://www.facebook.com/ahmadhassan.mirza",
+	    "Linkedin"	: "https://www.linkedin.com/in/ahmad-hassan-mirza-50176946/"
+    }
+}

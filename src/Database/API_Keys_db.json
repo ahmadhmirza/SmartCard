@@ -1,0 +1,15 @@
+ {
+	"AccessID-Shared with customer": {
+        "FirstName"	: "Customer's Name",
+        "LastName"	: "Customer's LastName",
+        "encodingKey"	: "Encoding Key, setby user?",
+        "timeStamp"	: "Time of generation of api key"
+    },
+
+	"131088": {
+        "firstName"	: "Ahmad Hassan",
+       "lastName" 	: "Mirza",
+        "encodingKey"	: "1297",
+        "timeStamp"	: "2020-03-23 13:13:13"
+    }
+}
