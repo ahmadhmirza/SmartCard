@@ -5,7 +5,7 @@ Created on Mon, March 23 13:13:13 2020
 scriptVersion = 1.0..0
 """
 import json
-from flask import make_response
+from flask import make_response,render_template
 import logging
 
 ############ Logger Init##############
@@ -72,28 +72,27 @@ def getUserProfiles():
     except:
         print("Unable to read " + str(CONSTANTS.USERS_DB_JSON_FILENAME))
         return -1    
-"""
-apikeyInfoFunc
-authenticates the apiKey passed in the request.
-Passes user value directly to the function configured with the endpoint.
-param : accessID : apiKey
-    required_scopes
-returns: user corresponding to the apiKey.
-""" 
-def basic_auth(accessID, required_scopes):
-    API_KEY_DB = getApiKeysFromDb()
     
-    if API_KEY_DB != -1:
-        if accessID in API_KEY_DB.keys():
-            custDataDict = API_KEY_DB[accessID]
-            print("Requesting user ID'd as: " + custDataDict["lastName"])
-            logger.info("Requesting user ID'd as: " + custDataDict["lastName"])
-            return {'sub': "test"}
-    else:
-        print("Invalid AccessID, request denied.")
-        logger.error("Invalid AccessID, request denied.")
-        return None
-    
+# =============================================================================
+# def getProfile(profileID):
+#     API_KEY_DB = getApiKeysFromDb()
+#     custDataDict = API_KEY_DB[profileID]
+#     encodingKey = custDataDict["encodingKey"]
+#     logger.info("Encoding Key:" + str(encodingKey))
+#     userProfiles = getUserProfiles()
+#     if userProfiles != -1:
+#         
+#         requestedProfile = userProfiles[encodingKey]
+#         res = make_response(requestedProfile)
+#         return res
+#     else:
+#         print("Error(s) encountered in executing the service.")
+#         logger.error("Error(s) encountered in executing the service.")
+#         httpCode = 500
+#         res = make_response("Error(s) encountered in executing the service.",httpCode)
+#         return res
+# =============================================================================
+
 def getProfile(profileID):
     API_KEY_DB = getApiKeysFromDb()
     custDataDict = API_KEY_DB[profileID]
@@ -103,13 +102,22 @@ def getProfile(profileID):
     if userProfiles != -1:
         
         requestedProfile = userProfiles[encodingKey]
-        res = make_response(requestedProfile)
-        return res
+        #res = make_response(requestedProfile)
+        requestedProfile = {
+        "Facebook": "https://www.facebook.com/ahmadhassan.mirza",
+        "Instagram": "https://www.instagram.com/ahm_adhm/",
+        "Linkedin": "https://www.linkedin.com/in/ahmad-hassan-mirza-50176946/",
+        "Name": "Ahmad Hassan Mirza"
+        }
+        return render_template('UserProfile.html', 
+                           customerName=requestedProfile["Name"],
+                           fb_addr = requestedProfile["Facebook"],
+                           linkdin_addr = requestedProfile["Linkedin"],
+                           ig_addr = requestedProfile["Instagram"])
     else:
         print("Error(s) encountered in executing the service.")
         logger.error("Error(s) encountered in executing the service.")
         httpCode = 500
         res = make_response("Error(s) encountered in executing the service.",httpCode)
         return res
-    
 
