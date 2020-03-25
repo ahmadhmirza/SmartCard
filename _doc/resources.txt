@@ -17,3 +17,7 @@ for reading an NFC tag
 python3 -m venv env
  source env/bin/activate
 sudo apt install libnfc5 libnfc-bin libnfc-examples
+
+
+source /home/ahmad/Desktop/SmartCard/env/bin/activate
+
