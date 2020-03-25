@@ -11,7 +11,7 @@ import connexion
 import uuid
 import os
 import logging
-
+import json
 ############ Logger Init##############
 try:
     with open('WebServer.log', 'w'):
@@ -59,7 +59,7 @@ SERVER_STATUS = {
 # Dictionary containing the names of html files
 ### Front end / web-applications
 HTML_TEMPLATES={
-        "home"          : "home.html"
+        "home"          : "UserProfile.html"
         }
 
 # Read the swagger.yml file to configure the endpoints
@@ -72,9 +72,32 @@ import SC_constants as CONSTANTS
 # Storage directory for uploaded files.
 DB_PATH             = CONSTANTS.DB_DIR
 TMP_PATH            = CONSTANTS.TMP_DIR
+apiDB_json          = CONSTANTS.API_DB_JSON
+UsersDB_json        = CONSTANTS.USER_DB_JSON
 # Storage directories for different file types.
 sslCertificate      = CONSTANTS.SSL_CERTIFICATE
 sslKey              = CONSTANTS.SSL_KEY
+
+def getApiKeysFromDb():
+    API_KEY_DB={}
+    try:
+        with open(apiDB_json,"r") as apiDb_jsonFile:
+            API_KEY_DB=json.load(apiDb_jsonFile)
+        return API_KEY_DB
+    except Exception as e:
+        print(str(e))
+        logger.error(str(e))
+        print("Unable to read API_Keys_db.json")
+        return -1
+def getUserProfiles():
+    try:
+        with open(UsersDB_json,"r") as userProfiles_json:
+            USER_PROFILES=json.load(userProfiles_json)
+        return USER_PROFILES
+    except Exception as e:
+        print(str(e))
+        return -1    
+    
 ####################Configuration parameters for web server####################
 # TODO : switch to app.config for flask
 """
@@ -114,9 +137,43 @@ def home():
     localhost:5000/
     :return:        the rendered template 'home.html'
     """
-    return render_template(HTML_TEMPLATES["home"])
+    res = {
+        "Facebook": "https://www.facebook.com/ahmadhassan.mirza",
+        "Instagram": "https://www.instagram.com/ahm_adhm/",
+        "Linkedin": "https://www.linkedin.com/in/ahmad-hassan-mirza-50176946/",
+        "Name": "Ahmad Hassan Mirza"
+        }
 
+    return render_template('UserProfile.html', 
+                           customerName=res["Name"],
+                           fb_addr = res["Facebook"],
+                           linkdin_addr = res["Linkedin"],
+                           ig_addr = res[""])
 
+@app.route("/profile/<profileID>")
+def getProfile(profileID):
+    API_KEY_DB = getApiKeysFromDb()
+    custDataDict = API_KEY_DB[profileID]
+    encodingKey = custDataDict["encodingKey"]
+    logger.info("Encoding Key:" + str(encodingKey))
+    userProfiles = getUserProfiles()
+    if userProfiles != -1:
+        
+        requestedProfile = userProfiles[encodingKey]
+        #res = make_response(requestedProfile)
+
+        return render_template('UserProfile.html', 
+                           customerName=requestedProfile["Name"],
+                           fb_addr = requestedProfile["Facebook"],
+                           linkdin_addr = requestedProfile["Linkedin"],
+                           ig_addr = requestedProfile["Instagram"])
+    else:
+        print("Error(s) encountered in executing the service.")
+        logger.error("Error(s) encountered in executing the service.")
+        httpCode = 500
+        res = make_response("Error(s) encountered in executing the service.",httpCode)
+        return res
+    
 """
 Runs the script.
 The choice of which certificate to use can be configured here.
