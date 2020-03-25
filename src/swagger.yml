@@ -9,7 +9,7 @@ produces:
   - application/json
 
 
-basePath: /smartCard
+basePath: /smortCard
 
 securityDefinitions:
   apiKey:

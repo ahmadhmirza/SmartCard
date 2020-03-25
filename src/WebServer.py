@@ -150,7 +150,7 @@ def home():
                            linkdin_addr = res["Linkedin"],
                            ig_addr = res[""])
 
-@app.route("/profile/<profileID>")
+@app.route("/smartCard/profile/<profileID>")
 def getProfile(profileID):
     API_KEY_DB = getApiKeysFromDb()
     custDataDict = API_KEY_DB[profileID]
