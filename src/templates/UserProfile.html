@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>SmartProfile</title>
+  <script src="{{url_for('static', filename='js/scProfile.js')}}"></script>
+</head>
+
+<body>
+
+    <div class="Profile">    
+        <table  id="ProfileTable">
+            <caption>{{customerName}}</caption>
+            
+            <thead>
+                <tr>
+                    <th>Facebook</th>
+                    <td>
+                        <form action= {{fb_addr}}
+                        id="facebook">
+                            <input type="submit" value="Facebook" />
+                        </form>    
+                    </td>
+                    
+                </tr>
+                <tr>
+                    <th>LinkedIn</th>
+                    <td>
+                        <form action= {{linkdin_addr}}
+                        id="linkedIn">
+                            <input type="submit" value="LinkedIn" />
+                        </form>    
+                    </td>
+                </tr>
+                <tr>
+                    <th>Instagram</th>
+                    <td>
+                        <form action= {{ig_addr}}
+                        id="instagram">
+                            <input type="submit" value="Instagram" />
+                        </form>    
+                    </td>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+
+    </div>
+    <div class="error">
+    </div>
+    </div>
+</body>
+
+</html>

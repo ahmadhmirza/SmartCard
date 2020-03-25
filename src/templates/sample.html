@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Smart Card</title>
+  </head>
+  <body>
+    <p>Here is the data from the server:</p>
+    <ul>
+      {% for data in customer_data %}
+      <li>{{ data + " : " + customer_data[data] }}</li>
+      {% endfor %}
+    </ul>
+    <p>THIS IS GONNA ROCK!</p>
+  </body>
+</html>    
