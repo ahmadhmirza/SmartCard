@@ -8,6 +8,7 @@ import os
 
 DATABASE_DIR_NAME       = "Database"
 TMP_DIR_NAME            = "tmp"
+PROFILE_PHOTO_DIR_NAME  = "ProfilePictures"
 SSL_CERT_DIR_NAME       = "OpenSSLCertificate"
 API_DB_JSON_FILENAME    = "API_Keys_db.json"
 USERS_DB_JSON_FILENAME  = "Profiles.json"
@@ -20,7 +21,7 @@ CERT_DIR    = os.path.join(DB_DIR,SSL_CERT_DIR_NAME)
 ############################################################
 API_DB_JSON     = os.path.join(DB_DIR,API_DB_JSON_FILENAME)
 USER_DB_JSON    = os.path.join(DB_DIR,USERS_DB_JSON_FILENAME)
-
+PROFILE_PHOTO_DIR = os.path.join(DB_DIR,PROFILE_PHOTO_DIR_NAME)
 #Directories for security certificates for HTTPs implementation
 SSL_CERTIFICATE     = CERT_DIR+ "/cert.pem"
 SSL_KEY             = CERT_DIR + "/key.pem"

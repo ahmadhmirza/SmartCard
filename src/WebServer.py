@@ -5,7 +5,7 @@ Created on Mon, March 23 13:13:13 2020
 scriptVersion = 1.0..0
 """
 from flask import render_template
-from flask import request,redirect,make_response
+from flask import request,redirect,make_response,send_from_directory
 from werkzeug.utils import secure_filename
 import connexion
 import uuid
@@ -72,11 +72,13 @@ import SC_constants as CONSTANTS
 # Storage directory for uploaded files.
 DB_PATH             = CONSTANTS.DB_DIR
 TMP_PATH            = CONSTANTS.TMP_DIR
+PROFILE_PHOTO_PATH  = CONSTANTS.PROFILE_PHOTO_DIR
 apiDB_json          = CONSTANTS.API_DB_JSON
 UsersDB_json        = CONSTANTS.USER_DB_JSON
 # Storage directories for different file types.
 sslCertificate      = CONSTANTS.SSL_CERTIFICATE
 sslKey              = CONSTANTS.SSL_KEY
+
 
 def getApiKeysFromDb():
     API_KEY_DB={}
@@ -150,6 +152,12 @@ def home():
                            linkdin_addr = res["Linkedin"],
                            ig_addr = res[""])
 
+
+@app.route("/smartCard/getImage")
+def get_image():
+    filename = "131088.jpg"
+    return send_from_directory(PROFILE_PHOTO_PATH,filename, mimetype='image/jpg')
+
 @app.route("/smartCard/profile/<profileID>")
 def getProfile(profileID):
     API_KEY_DB = getApiKeysFromDb()
@@ -161,12 +169,13 @@ def getProfile(profileID):
         
         requestedProfile = userProfiles[encodingKey]
         #res = make_response(requestedProfile)
-
+        profilePicture = "http://192.168.0.193:5000/smartCard/getImage"
         return render_template('UserProfile.html', 
                            customerName=requestedProfile["Name"],
                            fb_addr = requestedProfile["Facebook"],
                            linkdin_addr = requestedProfile["Linkedin"],
-                           ig_addr = requestedProfile["Instagram"])
+                           ig_addr = requestedProfile["Instagram"],
+                           profile_photo = profilePicture)
     else:
         print("Error(s) encountered in executing the service.")
         logger.error("Error(s) encountered in executing the service.")

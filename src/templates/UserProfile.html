@@ -16,6 +16,15 @@
             background-color: rgb(177, 170, 170);
             
         }
+        img {
+        border-radius: 50%;
+        max-width: 300px;
+        margin: auto;
+        padding:4px;
+        border:1px solid rgb(9, 104, 148);
+        background-color:rgb(9, 104, 148);
+        }
+
         .fa {
         padding: 10px;
         font-size: 20px;
@@ -46,7 +55,11 @@
 </head>
 
 <body>
+
     <div class="Profile">
+        <div class="ProfilePhoto">
+            <img src="{{profile_photo}}" height="160" width="160" >
+        </div>
         <h3>{{customerName}}</h3>   
         <hr> 
         <table id="ProfileTable">
