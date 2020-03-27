@@ -45,8 +45,8 @@ logger.addHandler(fh)
 
 
 # Create the application instance
+#1-Connexion Alternative
 app = connexion.App(__name__, specification_dir='./')
-
 
 #Initialize server
 SERVER_STATUS = {
