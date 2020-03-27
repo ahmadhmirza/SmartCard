@@ -13,6 +13,7 @@ SSL_CERT_DIR_NAME       = "OpenSSLCertificate"
 API_DB_JSON_FILENAME    = "API_Keys_db.json"
 USERS_DB_JSON_FILENAME  = "Profiles.json"
 
+PLACEHOLDER_PHOTO_M     = "placeholder_m.png"
 SCRIPT_PATH = os.path.dirname(__file__)
 
 DB_DIR      = os.path.join(SCRIPT_PATH,DATABASE_DIR_NAME)
@@ -25,6 +26,7 @@ PROFILE_PHOTO_DIR = os.path.join(DB_DIR,PROFILE_PHOTO_DIR_NAME)
 #Directories for security certificates for HTTPs implementation
 SSL_CERTIFICATE     = CERT_DIR+ "/cert.pem"
 SSL_KEY             = CERT_DIR + "/key.pem"
+############################################################
 
 
 
