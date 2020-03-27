@@ -4,8 +4,8 @@ Created on Mon, March 23 13:13:13 2020
 @author: Ahmad H. Mirza
 scriptVersion = 1.0..0
 """
-from app import app
-from flask import render_template
+from flask import current_app as app
+from flask import Blueprint, render_template,url_for
 from flask import request,redirect,make_response,send_from_directory
 from werkzeug.utils import secure_filename
 import uuid
@@ -25,7 +25,7 @@ logger.setLevel(logging.DEBUG)
 
 #create console handler and set level to debug
 ch = logging.StreamHandler()
-ch.setLevel(logging.DEBUG)
+ch.setLevel(logging.INFO)
 
 #create file handler and set level to info
 fh = logging.FileHandler(filename='WebServer.log')
@@ -42,14 +42,16 @@ fh.setFormatter(formatter)
 logger.addHandler(ch)
 logger.addHandler(fh)
 ###############################################################################
-BASE_PATH = "smart-card/"
-BASE_URL = "http://192.168.0.193:5000/"
-#BASE_URL = "localhost:5000/"
-#BASE_URL = "http://d3446b58.ngrok.io/"
+
+profiles_bp = Blueprint('profiles_bp', __name__,
+                     template_folder='templates',
+                     static_folder='static',
+                     url_prefix='/dig-card/profiles')
+
 """ 
 Initialization of all the necessary paths required for the script to run.
 """
-from app import SC_constants as CONSTANTS
+from application import SC_constants as CONSTANTS
 # Storage directory for uploaded files.
 DB_PATH             = CONSTANTS.DB_DIR
 TMP_PATH            = CONSTANTS.TMP_DIR
@@ -87,20 +89,12 @@ def getUserProfiles():
 ###############################################################################
 
 """
-Returns the UUID of the server
-path : <address>/ping
-"""
-@app.route("/server-status")
-def getServerStatus():
-    return SERVER_STATUS
-
-"""
 Create a URL route in the application for "/"
 Implementation only for web applications
 Not implemented at the moment
 TODO : implement web app
 """
-@app.route('/')
+@profiles_bp.route('/')
 def home():
     """
     This function just responds to the browser ULR
@@ -110,8 +104,8 @@ def home():
     res = make_response(welcomeString,200)
     return res
 
-@app.route("/smart-card/getImage/<photoID>")
-def get_image(photoID):
+@profiles_bp.route("/getImage/<photoID>")
+def getImage(photoID):
     defaultPlaceHolder = CONSTANTS.PLACEHOLDER_PHOTO_M
     #At signup if no profile photo is uploaded then default value will be 0
     if photoID != 0:
@@ -127,18 +121,17 @@ def get_image(photoID):
         return send_from_directory(PROFILE_PHOTO_PATH,defaultPlaceHolder, mimetype='image/jpg')
     
 
-@app.route("/smart-card/profile/<profileID>")
+@profiles_bp.route("/<profileID>")
 def getProfile(profileID):
     API_KEY_DB = getApiKeysFromDb()
     custDataDict = API_KEY_DB[profileID]
     encodingKey = custDataDict["encodingKey"]
-    
     logger.info("Encoding Key:" + str(encodingKey))
     userProfiles = getUserProfiles()
     if userProfiles != -1:
         
         requestedProfile = userProfiles[encodingKey]
-        profilePicture = BASE_URL + "smart-card/getImage/"+ requestedProfile["ProfilePhotoID"]
+        profilePicture = url_for("profiles_bp.getImage",photoID=requestedProfile["ProfilePhotoID"])
         print(profilePicture)
         return render_template('UserProfile.html', 
                            customerName=requestedProfile["Name"],

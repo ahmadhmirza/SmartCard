@@ -16,17 +16,17 @@ command to run :
     flask run --host=0.0.0.0  # runs on internal network
     flask run  # runs on localhost
 """
+
+"""initialize app"""
 from flask import Flask
-import uuid
 
-
-app = Flask(__name__)
-from app import routes
-
-#Initialize server
-SERVER_STATUS = {
-        "Server_uuid" :  str(uuid.uuid4()),
-        "ServerStatus": "Initializing...",
-        "Message" : "Roses are red, violets are blue, unexpected } on line 32."
+def create_app():
+    app = Flask(__name__)
+    
+    with app.app_context():
+        from .profiles import profiles_routes
+        app.register_blueprint(profiles_routes.profiles_bp)
         
-        }
+        #TODO: register blue prints
+        #Link https://hackersandslackers.com/flask-blueprints
+        return app
