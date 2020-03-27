@@ -6,11 +6,18 @@
     <script src="{{url_for('static', filename='js/scProfile.js')}}"></script>
     <!-- Add icon library -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <style>
         .Profile {
             max-width: 210px;
             margin: auto;
             font-size: 15px;
+        }
+        .ProfilePhoto {
+            text-align: center;
+        }
+        .CustomerName{
+            text-align: center;
         }
         body {
             background-color: rgb(177, 170, 170);
@@ -23,6 +30,7 @@
         padding:4px;
         border:1px solid rgb(9, 104, 148);
         background-color:rgb(9, 104, 148);
+        text-align: center;
         }
 
         .fa {
@@ -51,6 +59,7 @@
           background: #65349e;
           color: #e95950;
         }
+
         </style>
 </head>
 
@@ -60,7 +69,10 @@
         <div class="ProfilePhoto">
             <img src="{{profile_photo}}" height="160" width="160" >
         </div>
-        <h3>{{customerName}}</h3>   
+        <div class="CustomerName">
+            <h3>{{customerName}}</h3> 
+        </div>
+          
         <hr> 
         <table id="ProfileTable">
             
