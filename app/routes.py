@@ -5,7 +5,7 @@ Created on Mon, March 23 13:13:13 2020
 scriptVersion = 1.0..0
 """
 from app import app
-from flask import render_template
+from flask import render_template,url_for
 from flask import request,redirect,make_response,send_from_directory
 from werkzeug.utils import secure_filename
 import uuid
@@ -42,10 +42,9 @@ fh.setFormatter(formatter)
 logger.addHandler(ch)
 logger.addHandler(fh)
 ###############################################################################
-
-BASE_URL = "http://192.168.0.193:5000/"
-#BASE_URL = "localhost:5000/"
-
+BASE_URL = "http://192.168.0.193:5000"
+#BASE_URL = "localhost:5000"
+#BASE_URL = "http://d3446b58.ngrok.io"
 """ 
 Initialization of all the necessary paths required for the script to run.
 """
@@ -87,14 +86,6 @@ def getUserProfiles():
 ###############################################################################
 
 """
-Returns the UUID of the server
-path : <address>/ping
-"""
-@app.route("/server-status")
-def getServerStatus():
-    return SERVER_STATUS
-
-"""
 Create a URL route in the application for "/"
 Implementation only for web applications
 Not implemented at the moment
@@ -110,8 +101,8 @@ def home():
     res = make_response(welcomeString,200)
     return res
 
-@app.route("/smartCard/getImage/<photoID>")
-def get_image(photoID):
+@app.route("/smart-card/getImage/<photoID>")
+def getImage(photoID):
     defaultPlaceHolder = CONSTANTS.PLACEHOLDER_PHOTO_M
     #At signup if no profile photo is uploaded then default value will be 0
     if photoID != 0:
@@ -127,7 +118,7 @@ def get_image(photoID):
         return send_from_directory(PROFILE_PHOTO_PATH,defaultPlaceHolder, mimetype='image/jpg')
     
 
-@app.route("/smartCard/profile/<profileID>")
+@app.route("/smart-card/profile/<profileID>")
 def getProfile(profileID):
     API_KEY_DB = getApiKeysFromDb()
     custDataDict = API_KEY_DB[profileID]
@@ -138,7 +129,7 @@ def getProfile(profileID):
     if userProfiles != -1:
         
         requestedProfile = userProfiles[encodingKey]
-        profilePicture = BASE_URL + "smartCard/getImage/"+ requestedProfile["ProfilePhotoID"]
+        profilePicture = BASE_URL + url_for("getImage",photoID=requestedProfile["ProfilePhotoID"])
         print(profilePicture)
         return render_template('UserProfile.html', 
                            customerName=requestedProfile["Name"],

@@ -3,6 +3,9 @@ https://learn.sparkfun.com/tutorials/raspberry-pi-spi-and-i2c-tutorial/all
 https://pinout.xyz/pinout/ground
 https://blog.stigok.com/2017/10/12/setting-up-a-pn532-nfc-module-on-a-raspberry-pi-using-i2c.html
 http://www.elechouse.com/elechouse/images/product/PN532_module_V3/PN532_%20Manual_V3.pdf
+
+Flask tutorial
+https://blog.miguelgrinberg.com/post/the-flask-mega-tutorial-part-i-hello-world
 ::Commands::
 
 *Shows the connected i2c devices and their addresses:
@@ -12,6 +15,9 @@ i2cdetect -y 1
 for reading an NFC tag
 *nfc-poll
 
+
+::: For exposing local host to www :::
+https://dashboard.ngrok.com/status
 
 ::Commands::
 python3 -m venv env
