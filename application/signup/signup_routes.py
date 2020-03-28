@@ -4,19 +4,54 @@ Created on Mon, March 23 13:13:13 2020
 @author: Ahmad H. Mirza
 scriptVersion = 1.0..0
 """
-from app import app
-from flask import render_template,url_for
+from flask import current_app as app
+from flask import Blueprint, render_template,url_for
 from flask import request,redirect,make_response
 from werkzeug.utils import secure_filename
 import uuid
 import os
+import logging
 import json
+############################# Logger Init#####################################
+try:
+    with open('WebServer.log', 'w'):
+        pass
+except:
+    pass
+
+#Create Logger
+logger = logging.getLogger("WebServer_Log")
+logger.setLevel(logging.DEBUG)
+
+#create console handler and set level to debug
+ch = logging.StreamHandler()
+ch.setLevel(logging.INFO)
+
+#create file handler and set level to info
+fh = logging.FileHandler(filename='WebServer.log')
+fh.setLevel(logging.DEBUG)
+
+
+# create formatter
+formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s',datefmt='%d/%m/%Y %I:%M:%S %p')
+
+# add formatter to ch
+ch.setFormatter(formatter)
+fh.setFormatter(formatter)
+# add ch to logger
+logger.addHandler(ch)
+logger.addHandler(fh)
 ###############################################################################
+
+signup_bp = Blueprint('signup_bp', __name__,
+                     template_folder='templates',
+                     static_folder='static',
+                     url_prefix='/dig-card/signup')
 
 """ 
 Initialization of all the necessary paths required for the script to run.
 """
-from app import SC_constants as CONSTANTS
+from application import SC_constants as CONSTANTS
 # Storage directory for uploaded files.
 DB_PATH             = CONSTANTS.DB_DIR
 TMP_PATH            = CONSTANTS.TMP_DIR
@@ -27,7 +62,7 @@ UsersDB_json        = CONSTANTS.USER_DB_JSON
 sslCertificate      = CONSTANTS.SSL_CERTIFICATE
 sslKey              = CONSTANTS.SSL_KEY
 
-SERVER_ERROR_STRING = "The cookie monster is loose at out HQ and we are trying to get him under control, please give us a moment and try again later."
+SERVER_ERROR_STRING = CONSTANTS.SERVER_ERROR_STRING
 
 ################################ Init Databases ##############################
 def getApiKeysFromDb():
@@ -53,7 +88,21 @@ def getUserProfiles():
     
 ###############################################################################
 
-
-    
+"""
+Create a URL route in the application for "/"
+Implementation only for web applications
+Not implemented at the moment
+TODO : implement web app
+"""
+@signup_bp.route('/')
+def home():
+    """
+    This function just responds to the browser ULR
+    localhost:5000/
+    """
+    welcomeString = "New User Registration Page"
+    res = make_response(welcomeString,200)
+    return res
+   
 ################################ END OF SCRIPT ################################ 
 
