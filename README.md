@@ -10,18 +10,18 @@ DigitalContactCard project using Flask Framework
  - [x] A front end web page for displaying the user profile.
 	* Implemented using _html_, _jinja_ and _css_.
 * Version 0.0.2 :
- -[] Flask app for a sign up page for new users.
-	- [] Backend implementation using Flask-WTF extension.
-	- [] Database handling.
-	- [] Front end web page.
+ -[ ] Flask app for a sign up page for new users.
+	- [ ] Backend implementation using Flask-WTF extension.
+	- [ ] Database handling.
+	- [ ] Front end web page.
 
 * Version 0.0.3 : 
- - [] Flask app for a login page.
-	- [] Allow user to edit his information.
-	- [] Delete profile.
-	- [] Suspend/deactivate profile.
+ - [ ] Flask app for a login page.
+	- [ ] Allow user to edit his information.
+	- [ ] Delete profile.
+	- [ ] Suspend/deactivate profile.
 * Version 0.0.4 :
- - [] Move db to an online service e.g. MongoDb (tbd).
+ - [ ] Move db to an online service e.g. MongoDb (tbd).
 
 * Version 1.0 :
- - [] Deploy app to aws.
+ - [ ] Deploy app to aws.
