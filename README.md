@@ -1,5 +1,6 @@
-# SmartCard
-SmartCard project using NFC and RaspberryPi
+# Digital-ContactCard 
+### Dc-Card
+DigitalContactCard project using Flask Framework
 
 * Version 0.0.1 :
  - [x] Flask application for serving a user profile
