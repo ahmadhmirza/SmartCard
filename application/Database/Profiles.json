@@ -16,10 +16,10 @@
     },
 
 	"6969": {
-        "Name"	: "Dummy_User",
+        "Name"	: "John Doe",
         "Sex"   : "F",
         "ProfilePhotoID" : "0",
-        "Instagram"	: "https://www.instagram.com/magda.rakova",
+        "Instagram"	: "https://www.instagram.com/",
         "Facebook"  : "https://www.facebook.com",
         "Linkedin"  : "https://www.linkedin.com"
     }
