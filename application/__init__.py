@@ -27,6 +27,9 @@ def create_app():
         from .profiles import profiles_routes
         app.register_blueprint(profiles_routes.profiles_bp)
         
+        from .signup import signup_routes
+        app.register_blueprint(signup_routes.signup_bp)
+
         #TODO: register blue prints
         #Link https://hackersandslackers.com/flask-blueprints
         return app
