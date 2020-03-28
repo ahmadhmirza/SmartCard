@@ -6,6 +6,9 @@ scriptVersion = 1.0..0
 """
 import os
 
+"""
+Directory Names
+"""
 DATABASE_DIR_NAME       = "Database"
 TMP_DIR_NAME            = "tmp"
 PROFILE_PHOTO_DIR_NAME  = "ProfilePictures"
@@ -14,6 +17,10 @@ API_DB_JSON_FILENAME    = "API_Keys_db.json"
 USERS_DB_JSON_FILENAME  = "Profiles.json"
 
 PLACEHOLDER_PHOTO_M     = "placeholder_m.png"
+
+"""
+Paths
+"""
 SCRIPT_PATH = os.path.dirname(__file__)
 
 DB_DIR      = os.path.join(SCRIPT_PATH,DATABASE_DIR_NAME)
@@ -28,6 +35,10 @@ SSL_CERTIFICATE     = CERT_DIR+ "/cert.pem"
 SSL_KEY             = CERT_DIR + "/key.pem"
 ############################################################
 
+"""
+String Messages
+"""
+SERVER_ERROR_STRING = "The cookie monster is loose at out HQ and we are trying to get him under control, please give us a moment and try again later."
 
 
 
