@@ -62,30 +62,20 @@ UsersDB_json        = CONSTANTS.USER_DB_JSON
 sslCertificate      = CONSTANTS.SSL_CERTIFICATE
 sslKey              = CONSTANTS.SSL_KEY
 
-SERVER_ERROR_STRING = "The cookie monster is loose at out HQ and we are trying to get him under control, please give us a moment and try again later."
+SERVER_ERROR_STRING = CONSTANTS.SERVER_ERROR_STRING
 
 ################################ Init Databases ##############################
-def getApiKeysFromDb():
-    API_KEY_DB={}
-    try:
-        with open(apiDB_json,"r") as apiDb_jsonFile:
-            API_KEY_DB=json.load(apiDb_jsonFile)
-        return API_KEY_DB
-    except Exception as e:
-        print(str(e))
-        logger.error(str(e))
-        return -1
-    
-def getUserProfiles():
-    try:
-        with open(UsersDB_json,"r") as userProfiles_json:
-            USER_PROFILES=json.load(userProfiles_json)
-        return USER_PROFILES
-    except Exception as e:
-        print(str(e))
-        logger.error(str(e))
-        return -1    
-    
+from application import Data_Controller as dc 
+
+API_KEY_DB      = dc.getApiKeysFromDb
+USER_PROFILES   = dc.getUserProfiles()
+
+if API_KEY_DB == None:
+    res = make_response (SERVER_ERROR_STRING,500)
+    return res
+if USER_PROFILES == None:
+    res = make_response (SERVER_ERROR_STRING,500)
+    return res
 ###############################################################################
 
 """
@@ -125,7 +115,7 @@ def getImage(photoID):
 def getProfile(profileID):
     API_KEY_DB = getApiKeysFromDb()
     custDataDict = API_KEY_DB[profileID]
-    encodingKey = custDataDict["encodingKey"]
+    encodingKey = custDataDict["accessKey"]
     logger.info("Encoding Key:" + str(encodingKey))
     userProfiles = getUserProfiles()
     if userProfiles != -1:
