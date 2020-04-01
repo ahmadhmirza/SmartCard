@@ -46,48 +46,46 @@ logger.addHandler(fh)
 signup_bp = Blueprint('signup_bp', __name__,
                      template_folder='templates',
                      static_folder='static',
-                     url_prefix='/dig-card/signup')
+                     url_prefix='/signup')
 
 """ 
 Initialization of all the necessary paths required for the script to run.
 """
-from application import SC_constants as CONSTANTS
+try:
+    from application import SC_constants as CONSTANTS
+    print("INFO: Signup: Imported configuration from package successfully.")
+except:
+    import SC_constants as CONSTANTS
+    print("DEBUG: Signup: Running in Safe Mode: Imported alternative configuration.")
+    
 # Storage directory for uploaded files.
 DB_PATH             = CONSTANTS.DB_DIR
-TMP_PATH            = CONSTANTS.TMP_DIR
 PROFILE_PHOTO_PATH  = CONSTANTS.PROFILE_PHOTO_DIR
-apiDB_json          = CONSTANTS.API_DB_JSON
-UsersDB_json        = CONSTANTS.USER_DB_JSON
 # Storage directories for different file types.
-sslCertificate      = CONSTANTS.SSL_CERTIFICATE
-sslKey              = CONSTANTS.SSL_KEY
-
 SERVER_ERROR_STRING = CONSTANTS.SERVER_ERROR_STRING
 
 ################################ Init Databases ##############################
-def getApiKeysFromDb():
-    API_KEY_DB={}
-    try:
-        with open(apiDB_json,"r") as apiDb_jsonFile:
-            API_KEY_DB=json.load(apiDb_jsonFile)
-        return API_KEY_DB
-    except Exception as e:
-        print(str(e))
-        logger.error(str(e))
-        return -1
-    
-def getUserProfiles():
-    try:
-        with open(UsersDB_json,"r") as userProfiles_json:
-            USER_PROFILES=json.load(userProfiles_json)
-        return USER_PROFILES
-    except Exception as e:
-        print(str(e))
-        logger.error(str(e))
-        return -1    
-    
+try:
+    from application import Data_Controller as dc 
+    print("INFO: Signup: DB Controller initialized successfully.")
+except:
+    import Data_Controller as dc
+    print("DEBUG: Signup: Safe Mode: Imported alternative DBC.")
+
+API_KEY_DB      = dc.getApiKeysFromDb()
+USER_PROFILES   = dc.getUserProfiles()
+
+
+def isInitSuccessful():
+    if API_KEY_DB == False:
+        return False
+    if USER_PROFILES == False:
+        return False   
+    return True
 ###############################################################################
 
+def secureUpload():
+    return True
 """
 Create a URL route in the application for "/"
 Implementation only for web applications
@@ -96,13 +94,37 @@ TODO : implement web app
 """
 @signup_bp.route('/')
 def home():
-    """
-    This function just responds to the browser ULR
-    localhost:5000/
-    """
-    welcomeString = "New User Registration Page"
-    res = make_response(welcomeString,200)
-    return res
-   
+    if isInitSuccessful():
+        welcomeString = " MAIN PAGE: SignUp"
+        res = make_response(welcomeString,200)
+        return render_template("SignUp.html")
+    else:
+        welcomeString = "ERROR : INIT FAILED : SignUp "
+        res = make_response(welcomeString,500)
+        return res
+
+
+@signup_bp.route('/register-user',methods=['POST'])
+def createNewUser():
+    if isInitSuccessful():
+        if request.method == "POST":
+            if request.files:
+                print("File recieved via POST.")
+                savePath = DB_PATH+ "/test.jpg"
+                
+                if request.files["image"].filename =="":
+                    print("INFO: Signup: No profile photo selected, default image will be used.")
+                else:
+                    uploadedImage = request.files["image"]
+                    uploadedImage.save(savePath)
+                return redirect(url_for("signup_bp.home", code=200))
+
+            else:
+                print("No file.")
+                return render_template("SignUp.html")
+    else:
+        welcomeString = "ERROR: Signup: INIT FAILED : /register-user "
+        res = make_response(welcomeString,500)
+        return res
 ################################ END OF SCRIPT ################################ 
 

@@ -10,7 +10,13 @@ import secrets
 """ 
 Initialization of all the necessary paths required for the script to run.
 """
-import SC_constants as CONSTANTS
+try:
+    from application import SC_constants as CONSTANTS
+    print("Imported configuration from package successfully.")
+except:
+    import SC_constants as CONSTANTS
+    print("Running in Safe Mode: Imported alternative configuration.")
+
 # Storage directory for uploaded files.
 DB_PATH             = CONSTANTS.DB_DIR
 PROFILE_PHOTO_PATH  = CONSTANTS.PROFILE_PHOTO_DIR
@@ -27,7 +33,6 @@ def writeJson(filePath,pyDictionary):
         return True
     except Exception as e:
         print(str(e))
-        #TODO: log 
         return False
     
 def getTimeStamp():
@@ -51,7 +56,7 @@ def generateSignature(apiKey,encodingKey):
 
 """
 Function to read API-Keys Database 
-return: dictionary of the json file / None
+return: dictionary of the json file / False
 """
 def getApiKeysFromDb():
     API_KEY_DB={}
@@ -62,10 +67,10 @@ def getApiKeysFromDb():
     except Exception as e:
         print(str(e))
         #logger.error(str(e))
-        return None
+        return False
 """
 Function to read User profile database
-return: dictionary of user profiles / None
+return: dictionary of user profiles / False
 """    
 def getUserProfiles():
     try:
@@ -75,7 +80,7 @@ def getUserProfiles():
     except Exception as e:
         print(str(e))
         #logger.error(str(e))
-        return None  
+        return False  
 """
 Generate and add a new API key to the database.
 Next step should be to add the user profile data to the
@@ -85,7 +90,7 @@ return
 def addNewApiKey(fName,lName, accessKey):
     #Read the DB containing API_Keys
     API_KEY_DB = getApiKeysFromDb()
-    if API_KEY_DB != None: #If read operation is successful
+    if API_KEY_DB != False: #If read operation is successful
         apiKey = generateApiKey()   # generate a new API key
         
         API_KEY_DB[apiKey] = {      # write new key to the read db
@@ -99,22 +104,22 @@ def addNewApiKey(fName,lName, accessKey):
             print("New API-Key generated successfully!")
             print(apiKey)
             print("-----------------------------------")
-            return True,apiKey
+            return apiKey
         else:
             print("Error(s) encountered in API-Key generation.")
-            return None
+            return False
     else:
         print("Error(s) encountered in API-Key generation.")
-        return None
+        return False
  
 """
 Generate and add new user data to the database.
 return: True/false depending on the operation results.
 """         
-def addNewUserProfile(accessKey,apiKey, name, sex, photoId,socialLinksDict):
+def addNewUserProfile(apiKey, accessKey, name, sex, photoId,socialLinksDict):
     # read the user database
     USER_PROFILES = getUserProfiles()
-    if USER_PROFILES != None: # if read operation successful
+    if USER_PROFILES != False: # if read operation successful
         #generate a unique accessKey based on the apikey and the accesskey
         #given by the user.
         accessKey = generateSignature(apiKey,accessKey)
@@ -130,13 +135,13 @@ def addNewUserProfile(accessKey,apiKey, name, sex, photoId,socialLinksDict):
         if writeJson(USERS_DB_json,USER_PROFILES): # write operation successful?
             print("New user's data added to db successfully")
             print("-----------------------------------")
-            return True,accessKey
+            return accessKey
         else:
             print("Error(s) encountered in adding new user data.")
-            return None
+            return False
     else:
-        print("Error(s) encountered in adding new user profile.")
-        return None
+        print("Error(s) encountered in reading Users Database.")
+        return False
  
     
 """
@@ -147,21 +152,23 @@ def unitTest():
     print("Performing unit tests:")
     print("Generate a new API key and User profile to database.")
     print("-----------------------------------")
-    fName = "test"
-    lName = "user3"
-    fullName = fName +lName
-    accessKey = "12345"
-    sex = "E"
-    photoId = "0"
+    fName = "Johanna"
+    lName = "Doe"
+    fullName = fName +" "+lName
+    accessKey = "1234"
+    sex = "F"
+    photoId = "6969420.jpg"
     socialLinksDict={
-        "fb":"fb.com",
-        "ig":"ig.com",
-        "ph":"ph.com"
+        "Facebook":"https://www.facebook.com/",
+        "Instagram":"https://www.instagram.com/",
+        "Linkedin":"https://www.linkedin.com/"
         }
     
-    status_api,key_api = addNewApiKey(fName,lName,accessKey)  
-    status_usr,key_usr = addNewUserProfile(accessKey, key_api, fullName, sex, photoId, socialLinksDict)
+    key_api = addNewApiKey(fName,lName,accessKey)  
+    key_usr = addNewUserProfile(key_api, accessKey, fullName, sex, photoId, socialLinksDict)
     
+    print("Test results: API_KEY:" + key_api)
+    print("Test results: API_KEY:" + key_usr)
     API_DB = getApiKeysFromDb()
     USER_PROFILES = getUserProfiles()
     
@@ -174,6 +181,6 @@ def unitTest():
     else:
         print("Test Case: Add new user info: Failed")
       
-if __name__ == "__main__":
-    unitTest()
+#if __name__ == "__main__":
+#    unitTest()
 

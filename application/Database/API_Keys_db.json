@@ -1,24 +1,20 @@
 {
-    "accessKey-Shared with customer": {
+    "API-Key - shared with user": {
         "Name": "Customer's Name",
         "Sex": "M/W/E",
-        "ProfilePhotoID": "0",
-        "Social-Media Entries": "url"
+        "accessKey": "password from user",
+        "timeStamp": "time of creation"
     },
-    "1297": {
-        "Name": "Ahmad Hassan Mirza",
-        "Sex": "M",
-        "ProfilePhotoID": "131088",
-        "Instagram": "https://www.instagram.com/ahm_adhm/",
-        "Facebook": "https://www.facebook.com/ahmadhassan.mirza",
-        "Linkedin": "https://www.linkedin.com/in/ahmad-hassan-mirza-50176946/"
+    "192996ecc79c84ed0c1e416258c19787": {
+        "firstName": "Ahmad Hassan",
+        "lastName": "Mirza",
+        "accessKey": "1297",
+        "timeStamp": "2020-04-01 12:14:37"
     },
-    "6969": {
-        "Name": "John Doe",
-        "Sex": "F",
-        "ProfilePhotoID": "0",
-        "Instagram": "https://www.instagram.com/",
-        "Facebook": "https://www.facebook.com",
-        "Linkedin": "https://www.linkedin.com"
+    "ecaac832e53d6ef01f561c40d68db3fa": {
+        "firstName": "Johanna",
+        "lastName": "Doe",
+        "accessKey": "1234",
+        "timeStamp": "2020-04-01 12:15:55"
     }
 }

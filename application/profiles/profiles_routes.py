@@ -46,36 +46,42 @@ logger.addHandler(fh)
 profiles_bp = Blueprint('profiles_bp', __name__,
                      template_folder='templates',
                      static_folder='static',
-                     url_prefix='/dig-card/profiles')
+                     url_prefix='/profiles')
 
 """ 
 Initialization of all the necessary paths required for the script to run.
 """
-from application import SC_constants as CONSTANTS
+try:
+    from application import SC_constants as CONSTANTS
+    print("INFO: Profiles: Imported configuration from package successfully.")
+except:
+    import SC_constants as CONSTANTS
+    print("DEBUG: Profiles: Running in Safe Mode: Imported alternative configuration.")
+    
 # Storage directory for uploaded files.
 DB_PATH             = CONSTANTS.DB_DIR
-TMP_PATH            = CONSTANTS.TMP_DIR
 PROFILE_PHOTO_PATH  = CONSTANTS.PROFILE_PHOTO_DIR
-apiDB_json          = CONSTANTS.API_DB_JSON
-UsersDB_json        = CONSTANTS.USER_DB_JSON
 # Storage directories for different file types.
-sslCertificate      = CONSTANTS.SSL_CERTIFICATE
-sslKey              = CONSTANTS.SSL_KEY
-
 SERVER_ERROR_STRING = CONSTANTS.SERVER_ERROR_STRING
 
 ################################ Init Databases ##############################
-from application import Data_Controller as dc 
+try:
+    from application import Data_Controller as dc 
+    print("INFO: Profiles: DB Controller initialized successfully.")
+except:
+    import Data_Controller as dc
+    print("DEBUG: Profiles: Safe Mode: Imported alternative DBC.")
 
-API_KEY_DB      = dc.getApiKeysFromDb
+
+API_KEY_DB      = dc.getApiKeysFromDb()
 USER_PROFILES   = dc.getUserProfiles()
 
-if API_KEY_DB == None:
-    res = make_response (SERVER_ERROR_STRING,500)
-    return res
-if USER_PROFILES == None:
-    res = make_response (SERVER_ERROR_STRING,500)
-    return res
+def isInitSuccessful():
+    if API_KEY_DB == False:
+        return False
+    if USER_PROFILES == False:
+        return False   
+    return True
 ###############################################################################
 
 """
@@ -86,13 +92,15 @@ TODO : implement web app
 """
 @profiles_bp.route('/')
 def home():
-    """
-    This function just responds to the browser ULR
-    localhost:5000/
-    """
-    welcomeString = " Test URL"
-    res = make_response(welcomeString,200)
-    return res
+    if isInitSuccessful():
+        welcomeString = " HOME PAGE: PROFILES"
+        res = make_response(welcomeString,200)
+        return res
+    else:
+        welcomeString = "ERROR: Profiles : INIT FAILED"
+        res = make_response(welcomeString,500)
+        return res
+
 
 @profiles_bp.route("/getImage/<photoID>")
 def getImage(photoID):
@@ -113,30 +121,46 @@ def getImage(photoID):
 
 @profiles_bp.route("/<profileID>")
 def getProfile(profileID):
-    API_KEY_DB = getApiKeysFromDb()
-    custDataDict = API_KEY_DB[profileID]
-    encodingKey = custDataDict["accessKey"]
-    logger.info("Encoding Key:" + str(encodingKey))
-    userProfiles = getUserProfiles()
-    if userProfiles != -1:
-        
-        requestedProfile = userProfiles[encodingKey]
-        profilePicture = url_for("profiles_bp.getImage",photoID=requestedProfile["ProfilePhotoID"])
-        print(profilePicture)
-        return render_template('UserProfile.html', 
-                           customerName=requestedProfile["Name"],
-                           fb_addr = requestedProfile["Facebook"],
-                           linkdin_addr = requestedProfile["Linkedin"],
-                           ig_addr = requestedProfile["Instagram"],
-                           profile_photo = profilePicture)
+    if isInitSuccessful():
+        API_KEY_DB      = dc.getApiKeysFromDb()
+        if profileID in API_KEY_DB:
+            #get the customer specific information from API_KEY_DB:
+            custDataDict    = API_KEY_DB[profileID]
+            #get the user's access key:
+            accessKey     = custDataDict["accessKey"]
+            logger.info("Access Key:" + str(accessKey))
+            #Calculate the secret access key:
+            accessKey = dc.generateSignature(profileID,accessKey)
+            #Read the UsersDB_json
+            userProfiles = dc.getUserProfiles()
+            #Check if the read operation was successful.
+            if userProfiles != False:
+                #Get the user's profile from the database.
+                requestedProfile = userProfiles[accessKey]
+                profilePicture = url_for("profiles_bp.getImage",photoID=requestedProfile["ProfilePhotoID"])
+                print("INFO: Profiles: Profile Photo URL: " + profilePicture)
+                return render_template('UserProfile.html', 
+                                customerName=requestedProfile["Name"],
+                                fb_addr = requestedProfile["Facebook"],
+                                linkdin_addr = requestedProfile["Linkedin"],
+                                ig_addr = requestedProfile["Instagram"],
+                                profile_photo = profilePicture)
+            #IF the read operation on user profiles returned an error:
+            else:
+                print("Error(s) encountered in geting the user profiles database.")
+                logger.error("Error(s) encountered in geting the user profiles database.")
+                httpCode = 500
+                res = make_response(SERVER_ERROR_STRING,httpCode)
+                return res
+        #profileID does not exist in the db
+        else:
+            MSG_STRING = "The requested profile does not exist in the user database."
+            res = make_response(MSG_STRING,404)
+            return res 
+    #Init failed:
     else:
-        print("Error(s) encountered in executing the service.")
-        logger.error("Error(s) encountered in executing the service.")
-        httpCode = 500
-        res = make_response(SERVER_ERROR_STRING,httpCode)
-        return res
-    
-
-    
+        ERROR_STRING = "ERROR: Profiles: INIT FAILED. "
+        res = make_response(ERROR_STRING,500)
+        return res 
 ################################ END OF SCRIPT ################################ 
 
