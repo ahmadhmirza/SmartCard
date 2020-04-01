@@ -3,8 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <title>DcCard || Welcome to the future!</title>
-    <!-- Adding icons library -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <!-- Adding local style sheet -->
     <link rel="stylesheet" href="{{ url_for('.static', filename='css/signup.css') }}">
 
@@ -15,44 +13,46 @@
 
 <body>
     <div class="bg">
-        <form action="/signup/register-user" method="POST" enctype="multipart/form-data">
-
+        <form class="form-vertical" action="/signup/register-user" method="POST" enctype="multipart/form-data">
             <div class="form-group">
-                <h2> User Information </h2>
+              <h1>New User Registration</h1>
+                <h2>Signup Form</h2>
                 <p>
-                    <label>Last Name</label>
-                    <input type = "text"
-                         id = "lName"
-                         placeholder = "Please enter your last name" />
+                    <label >Last Name:</label>
+                    <p><input type  = "text"
+                              id    = "lName"
+                              placeholder = "Please enter your last name" /></p>
                 </p>
                 <p>
-                    <label>First Name</label>
-                    <input type = "text"
-                          id = "fName"
-                          placeholder = "Please enter your first name" />
+                    <label>First Name:</label>
+                    <p><input type  = "text"
+                              id    = "fName"
+                              placeholder = "Please enter your first name" /></p>
                 </p>
                 <p>
-                    <label>Password</label>
-                    <input type = "Password "
-                          id = "Password"
-                          placeholder = "Please enter your password" />
+                    <label>Password:</label>
+                    <p><input type  = "Password "
+                              id    = "Password"
+                              placeholder = "Please enter your password" /></p>
                 </p>
                 <p>
-                    <label>Catch Phrase (optional)</label>
-                    <input type = "text "
-                          id    = "cPhrase"
-                          placeholder = "Your catch phrase here. ;)" />
+                    <label>Catch Phrase (optional):</label>
+                    <p><input type  = "text "
+                              id    = "cPhrase"
+                              placeholder = "Your catch phrase here. ;)" /></p>
                 </p>
 
-            <h3>{{photoMessage|default("Please select an image.", true)}}</h3>
+                <h3>Please select an image.</h3>
         
-            <div class="custom-file">
-              <input type="file" class="custom-file-input" name="image" id="image" oninput="checkFileSize(this);">
-              <!--<label class="custom-file-label" for="image">Select image...</label> -->
+                <div class="custom-file">
+                  <input type = "file" class="custom-file-input" name="image" id="image" oninput="checkFileSize(this);">
+                  <!--<label class="custom-file-label" for="image">Select image...</label> -->
+                </div>
             </div>
-          </div>
 
-          <button type="submit" class="btn btn-primary">Submit</button>
+          <div class="submit-btn">
+              <button type="submit" class="btn btn-primary">Submit</button>
+          </div>
         </form>
     </div>  
 </body>

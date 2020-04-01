@@ -1,18 +1,7 @@
 /*
- * This is the CSS stylesheet for the UserProfile.html page
+ * This is the CSS stylesheet for the SignUp.html page
  */
 
-.Profile {
-    max-width: 210px;
-    margin: auto;
-    font-size: 15px;
-}
-.ProfilePhoto {
-    text-align: center;
-}
-.CustomerName{
-    text-align: center;
-}
 
 /* Following two tags combined to make the background image scalable*/
 body, html {
@@ -30,44 +19,27 @@ body, html {
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
+
+  padding: 10px;
+  padding-left: 50px;
+  font-size: 15px;
+  width: 500px;
+  height: 500px;
+  text-align: left;
+  line-height: 20px;
+  text-decoration: none; 
 }
-/* -------------------------------------- */
-}
-img {
-border-radius: 50%;
-max-width: 300px;
+
+
+.form-vertical .form-group label {
+  font-weight: bold;
+
+  }
+
+.form-group {
+align-content: center;
 margin: auto;
-padding:4px;
-border:1px solid rgb(9, 104, 148);
-background-color:rgb(9, 104, 148);
-text-align: center;
+  }
+.submit-btn {
+  padding-top: 20px;
 }
-
-.fa {
-padding: 10px;
-font-size: 20px;
-width: 210px;
-height: 25px;
-text-align: left;
-line-height: 20px;
-text-decoration: none;
-}
-
-.fa:hover {
-    opacity: 0.7;
-}
-
-.fa-facebook {
-  background: #3B5998;
-  color: white;
-}
-.fa-linkedin {
-  background: #2867B2;
-  color: white;
-}
-.fa-instagram {
-  background: #65349e;
-  color: #e95950;
-}
-
-  
