@@ -8,6 +8,7 @@
 
     <!-- to adapt content position accoding to screen size-->
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    
 
 </head>
 
@@ -15,12 +16,25 @@
       {% block content %}
         <div class="formwrapper">
           <h2 class="title">SignUp</h2>
-          <form method="POST" action="/signup/register-user">
-              <div class="form-field">{{ form.lName.label }} {{ form.lName }}</div>
+          <form method="POST" action="/signup/" enctype="multipart/form-data">
+            {{ form.hidden_tag() }}
+              <div class="form-field">{{ form.lName.label }} {{ form.lName }}
+                      {% if form.lName.errors %}
+                              <ul class="errors">
+                                {% for error in form.lName.errors %}
+                                  <li>{{ error }}</li>
+                                  {% endfor %}
+                              </ul>
+                          {% endif %}
+              </div>
               <div class="form-field">{{ form.fName.label }} {{ form.fName }}</div>
               <div class="form-field">{{ form.password.label }} {{ form.password }}</div>
               <div class="form-field">{{ form.catchPhrase.label }} {{ form.catchPhrase }}</div>
+              <div class="form-field">{{ form.profilePhoto.label }} {{ form.profilePhoto }}</div>
               {{ form.submit() }}
+              {% if form.errors %}
+                  {{ form.errors }}
+              {% endif %}
           </form>
         </div>
       {% endblock %}

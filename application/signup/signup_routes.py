@@ -99,53 +99,30 @@ try:
 except:
     import forms
     print("DEBUG: Signup: Running in Safe Mode: Imported alternative configuration.")
-@signup_bp.route('/')
+@signup_bp.route('/',methods=('GET', 'POST'))
 def home():
     if isInitSuccessful():
         signupForm = forms.SignupForm()
-        print(url_for('signup_bp.createNewUser'))
-        if signupForm.validate_on_submit():
-            print("Yasss")
-            return redirect(url_for('signup_bp.createNewUser'))
+        if request.method == 'POST':
+            if signupForm.validate_on_submit():
+                print("INFO: Signup: Form Data Validated.")
+                print("INFO: Signup: new user registration, LastName: " + signupForm.lName.data)
+                fileName = signupForm.profilePhoto.data.filename
+                try: # try to save the profile photo
+                    signupForm.profilePhoto.data.save(os.path.join(PROFILE_PHOTO_PATH,fileName))
+                    print("Profile photo uploaded successfully.")
+                except Exception as e:
+                    print("ERROR: Signup: " + str(e))
+                #TODO: Page for successful registration.
+                #TODO: Flash message implementation.
+                return redirect(url_for('signup_bp.home'))
+            else:
+                print("ERROR: Signup: Form data validation failed.")
         return render_template("form.html",form = signupForm)
     else:
         welcomeString = "ERROR : INIT FAILED : SignUp "
         res = make_response(welcomeString,500)
         return res
 
-
-@signup_bp.route('/register-user',methods=['POST'])
-def createNewUser():
-    if isInitSuccessful():
-        if request.method == "POST":
-            if request.files:
-                print("File recieved via POST.")
-                savePath = DB_PATH+ "/test.jpg"
-                
-                if request.files["image"].filename =="":
-                    print("INFO: Signup: No profile photo selected, default image will be used.")
-                else:
-                    uploadedImage = request.files["image"]
-                    uploadedImage.save(savePath)
-                return redirect(url_for("signup_bp.home", code=200))
-
-            else:
-                print("No file.")
-                f = request.form
-                #for key in f.keys():
-                #    for value in f.getlist(key):
-                #        print(key,":",value)
-                print(f.get("lName"))
-                res = {
-                    "LastName": f.get("lName"),
-                    "FirstName": f.get("fName"),
-                    "Password": f.get("password"),
-                    "CatchPhrase": f.get("catchPhrase")
-                }
-                return make_response(res,200)
-    else:
-        welcomeString = "ERROR: Signup: INIT FAILED : /register-user "
-        res = make_response(welcomeString,500)
-        return res
 ################################ END OF SCRIPT ################################ 
 

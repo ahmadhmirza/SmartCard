@@ -22,7 +22,6 @@ from flask import Flask
 
 def create_app():
     import os
-    
     app = Flask(__name__)
     app.config['SECRET_KEY'] = "SECRET_KEY"
     
