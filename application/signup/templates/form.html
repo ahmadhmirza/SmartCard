@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>DcCard || Welcome to the future!</title>
+    <!-- Adding local style sheet -->
+    <link rel="stylesheet" href="{{ url_for('.static', filename='css/signup.css') }}">
+
+    <!-- to adapt content position accoding to screen size-->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+</head>
+
+<body>
+      {% block content %}
+        <div class="formwrapper">
+          <h2 class="title">SignUp</h2>
+          <form method="POST" action="/signup/register-user">
+              <div class="form-field">{{ form.lName.label }} {{ form.lName }}</div>
+              <div class="form-field">{{ form.fName.label }} {{ form.fName }}</div>
+              <div class="form-field">{{ form.password.label }} {{ form.password }}</div>
+              <div class="form-field">{{ form.catchPhrase.label }} {{ form.catchPhrase }}</div>
+              {{ form.submit() }}
+          </form>
+        </div>
+      {% endblock %}
+</body>
+
+</html>

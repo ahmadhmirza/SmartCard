@@ -92,12 +92,22 @@ Implementation only for web applications
 Not implemented at the moment
 TODO : implement web app
 """
+
+try:
+    from application import forms
+    print("INFO: Signup: Imported configuration from package successfully.")
+except:
+    import forms
+    print("DEBUG: Signup: Running in Safe Mode: Imported alternative configuration.")
 @signup_bp.route('/')
 def home():
     if isInitSuccessful():
-        welcomeString = " MAIN PAGE: SignUp"
-        res = make_response(welcomeString,200)
-        return render_template("SignUp.html")
+        signupForm = forms.SignupForm()
+        print(url_for('signup_bp.createNewUser'))
+        if signupForm.validate_on_submit():
+            print("Yasss")
+            return redirect(url_for('signup_bp.createNewUser'))
+        return render_template("form.html",form = signupForm)
     else:
         welcomeString = "ERROR : INIT FAILED : SignUp "
         res = make_response(welcomeString,500)
@@ -121,7 +131,18 @@ def createNewUser():
 
             else:
                 print("No file.")
-                return render_template("SignUp.html")
+                f = request.form
+                #for key in f.keys():
+                #    for value in f.getlist(key):
+                #        print(key,":",value)
+                print(f.get("lName"))
+                res = {
+                    "LastName": f.get("lName"),
+                    "FirstName": f.get("fName"),
+                    "Password": f.get("password"),
+                    "CatchPhrase": f.get("catchPhrase")
+                }
+                return make_response(res,200)
     else:
         welcomeString = "ERROR: Signup: INIT FAILED : /register-user "
         res = make_response(welcomeString,500)
