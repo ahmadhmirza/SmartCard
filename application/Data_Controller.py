@@ -116,7 +116,7 @@ def addNewApiKey(fName,lName, accessKey):
 Generate and add new user data to the database.
 return: True/false depending on the operation results.
 """         
-def addNewUserProfile(apiKey, accessKey, name, sex, photoId,socialLinksDict):
+def addNewUserProfile(apiKey, accessKey, name, photoId,socialLinksDict):
     # read the user database
     USER_PROFILES = getUserProfiles()
     if USER_PROFILES != False: # if read operation successful
@@ -125,7 +125,7 @@ def addNewUserProfile(apiKey, accessKey, name, sex, photoId,socialLinksDict):
         accessKey = generateSignature(apiKey,accessKey)
         USER_PROFILES[accessKey] = {
             "Name"	            : name,
-            "Sex"               : sex,
+            # TODO: "Sex"               : sex,
             "ProfilePhotoID"    : photoId,
             }
         
@@ -156,7 +156,6 @@ def unitTest():
     lName = "Doe"
     fullName = fName +" "+lName
     accessKey = "1234"
-    sex = "F"
     photoId = "6969420.jpg"
     socialLinksDict={
         "Facebook":"https://www.facebook.com/",
@@ -165,7 +164,7 @@ def unitTest():
         }
     
     key_api = addNewApiKey(fName,lName,accessKey)  
-    key_usr = addNewUserProfile(key_api, accessKey, fullName, sex, photoId, socialLinksDict)
+    key_usr = addNewUserProfile(key_api, accessKey, fullName, photoId, socialLinksDict)
     
     print("Test results: API_KEY:" + key_api)
     print("Test results: API_KEY:" + key_usr)
