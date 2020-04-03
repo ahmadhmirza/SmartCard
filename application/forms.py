@@ -18,10 +18,11 @@ except:
 class SignupForm(FlaskForm):
     
     """ Form for new user registration"""
-    lName = StringField("Last Name",validators=[DataRequired()])
-    fName = StringField("First Name")
-    password = StringField("Password")
-    catchPhrase = TextField("Catch Phrase (optional)")
-    profilePhoto = FileField("Please select a Profile Photo")
+    lName = StringField("Last Name: ",validators=[DataRequired()])
+    fName = StringField("First Name: ")
+    password = StringField("Password: ",validators=[DataRequired()])
+    socialLinks = TextField("Social Media URLs (please enter the links seperated by a comma): ")
+    catchPhrase = TextField("Catch Phrase (optional): ")
+    profilePhoto = FileField("Please select a Profile Photo: ")
     #recaptcha = RecaptchaField()
     submit = SubmitField("Submit")
