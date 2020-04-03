@@ -21,7 +21,7 @@ body, html {
 
 .bg {
   /* The image used */
-  /background-image: url("../assets/background-image.jpg");
+  background-image: url("../assets/background-image.jpg");
 
   /* Full height */
   height: 100%;

@@ -107,7 +107,8 @@ def getImage(photoID):
     defaultPlaceHolder = CONSTANTS.PLACEHOLDER_PHOTO_M
     #At signup if no profile photo is uploaded then default value will be 0
     if photoID != 0:
-        filename = photoID + ".jpg"
+        #filename = photoID + ".jpg"
+        filename = photoID
         try:
             return send_from_directory(PROFILE_PHOTO_PATH,filename, mimetype='image/jpg')
         except Exception as e:
