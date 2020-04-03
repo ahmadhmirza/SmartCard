@@ -107,15 +107,51 @@ def home():
             if signupForm.validate_on_submit():
                 print("INFO: Signup: Form Data Validated.")
                 print("INFO: Signup: new user registration, LastName: " + signupForm.lName.data)
-                fileName = signupForm.profilePhoto.data.filename
+                fName = signupForm.fName.data
+                lName = signupForm.lName.data
+                fullName = fName + " " + lName
+                password = signupForm.password.data # TODO: Hash the password
+
+                # 1- Generate a new API-key for the user.
+                # API is generated for First and Last Name & user password.
+                genApiKey = dc.addNewApiKey(fName,lName,password)
+
+                #2- Save the profile photo and assign the photoID.
                 try: # try to save the profile photo
+                    #fileName = signupForm.profilePhoto.data.filename
+                    #extension = fileName.rsplit(".",1)[1]
+                    #TODO: verify allowed extension and file name.
+                    #TODO: file size check
+                    fileName = genApiKey # Save the uploaded file with the same name as the api key
                     signupForm.profilePhoto.data.save(os.path.join(PROFILE_PHOTO_PATH,fileName))
+                    photoID = str(fileName)
                     print("Profile photo uploaded successfully.")
                 except Exception as e:
                     print("ERROR: Signup: " + str(e))
+                    print("ERROR: Signup: Placeholder profile photo will be used.")
+                    photoID = "0"
+                #Place-holders###################################
+
+                #3- TODO: populate socialLinksDict from the form
+                socialLinksDict = {
+                    "Facebook": "https://www.facebook.com/",
+                    "Instagram": "https://www.instagram.com",
+                    "Linkedin" : "https://www.linkedin.com/"
+                }
+                ##################################################
+
+                #4- Add User Profile to the database.
+                accessKey = dc.addNewUserProfile(genApiKey,password,fullName, photoID, socialLinksDict)
+                #3- Confirm user registration.
+                #TODO: Send an automated email to admin-email with user registration details.
+                print("INFO: Signup: New user registration successfull.")
+                print("API-Key: " + str(genApiKey))
+                
                 #TODO: Page for successful registration.
                 #TODO: Flash message implementation.
-                return redirect(url_for('signup_bp.home'))
+                newProfileURL = url_for('profiles_bp.getProfile',profileID=genApiKey)
+                return redirect(newProfileURL)
+                #return redirect(url_for('signup_bp.home'))
             else:
                 print("ERROR: Signup: Form data validation failed.")
         return render_template("form.html",form = signupForm)
