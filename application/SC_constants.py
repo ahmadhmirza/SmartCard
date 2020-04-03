@@ -39,6 +39,9 @@ PROFILE_PHOTO_DIR = os.path.join(DB_DIR,PROFILE_PHOTO_DIR_NAME)
 #SSL_KEY             = CERT_DIR + "/key.pem"
 ############################################################
 
+SUPPORTED_WEBSITES =["FACEBOOK",
+                     "INSTAGRAM",
+                     "LINKEDIN"]
 """
 Hard coded message strings go here.
 """

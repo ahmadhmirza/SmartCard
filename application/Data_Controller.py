@@ -158,9 +158,9 @@ def unitTest():
     accessKey = "1234"
     photoId = "6969420.jpg"
     socialLinksDict={
-        "Facebook":"https://www.facebook.com/",
-        "Instagram":"https://www.instagram.com/",
-        "Linkedin":"https://www.linkedin.com/"
+        "FACEBOOK":"https://www.facebook.com/",
+        "INSTAGRAM":"https://www.instagram.com/",
+        "LINKEDIN":"https://www.linkedin.com/"
         }
     
     key_api = addNewApiKey(fName,lName,accessKey)  

@@ -63,7 +63,7 @@ DB_PATH             = CONSTANTS.DB_DIR
 PROFILE_PHOTO_PATH  = CONSTANTS.PROFILE_PHOTO_DIR
 # Storage directories for different file types.
 SERVER_ERROR_STRING = CONSTANTS.SERVER_ERROR_STRING
-
+SUPPORTED_WEBSITES = CONSTANTS.SUPPORTED_WEBSITES
 ################################ Init Databases ##############################
 try:
     from application import Data_Controller as dc 
@@ -111,7 +111,7 @@ def home():
                 lName = signupForm.lName.data
                 fullName = fName + " " + lName
                 password = signupForm.password.data # TODO: Hash the password
-
+                socialLinks = signupForm.socialLinks.data
                 # 1- Generate a new API-key for the user.
                 # API is generated for First and Last Name & user password.
                 genApiKey = dc.addNewApiKey(fName,lName,password)
@@ -130,14 +130,17 @@ def home():
                     print("ERROR: Signup: " + str(e))
                     print("ERROR: Signup: Placeholder profile photo will be used.")
                     photoID = "0"
-                #Place-holders###################################
 
-                #3- TODO: populate socialLinksDict from the form
-                socialLinksDict = {
-                    "Facebook": "https://www.facebook.com/",
-                    "Instagram": "https://www.instagram.com",
-                    "Linkedin" : "https://www.linkedin.com/"
-                }
+                #3-Populate socialLinksDict from the form
+                #TODO: Check for http/https in the provided URL
+                socialLinks = socialLinks.split(",")
+                socialLinksDict = {}
+                for url in socialLinks:
+                    for item in SUPPORTED_WEBSITES:
+                        if item.lower() in url.lower():
+                            socialLinksDict[item] = url
+                        else:
+                            pass
                 ##################################################
 
                 #4- Add User Profile to the database.

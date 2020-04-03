@@ -142,9 +142,9 @@ def getProfile(profileID):
                 print("INFO: Profiles: Profile Photo URL: " + profilePicture)
                 return render_template('UserProfile.html', 
                                 customerName=requestedProfile["Name"],
-                                fb_addr = requestedProfile["Facebook"],
-                                linkdin_addr = requestedProfile["Linkedin"],
-                                ig_addr = requestedProfile["Instagram"],
+                                fb_addr = requestedProfile["FACEBOOK"],
+                                linkdin_addr = requestedProfile["LINKEDIN"],
+                                ig_addr = requestedProfile["INSTAGRAM"],
                                 profile_photo = profilePicture)
             #IF the read operation on user profiles returned an error:
             else:
