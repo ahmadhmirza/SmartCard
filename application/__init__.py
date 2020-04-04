@@ -32,6 +32,8 @@ def create_app():
         from .signup import signup_routes
         app.register_blueprint(signup_routes.signup_bp)
 
+        from .home import home_routes
+        app.register_blueprint(home_routes.home_bp)
         #TODO: register blue prints
         #Link https://hackersandslackers.com/flask-blueprints
         return app
