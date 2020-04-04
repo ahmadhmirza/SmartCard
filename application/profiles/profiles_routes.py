@@ -140,7 +140,10 @@ def getProfile(profileID):
                 requestedProfile = userProfiles[accessKey]
                 profilePicture = url_for("profiles_bp.getImage",photoID=requestedProfile["ProfilePhotoID"])
                 print("INFO: Profiles: Profile Photo URL: " + profilePicture)
-                return render_template('UserProfile.html', 
+                return render_template('UserProfile.html',
+                                home_addr="localhost:5000/",
+                                signin_addr= "localhost:5000/",
+                                signup_addr= url_for("signup_bp.home"),
                                 customerName=requestedProfile["Name"],
                                 fb_addr = requestedProfile["FACEBOOK"],
                                 linkdin_addr = requestedProfile["LINKEDIN"],
