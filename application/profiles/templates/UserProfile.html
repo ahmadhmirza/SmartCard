@@ -5,6 +5,8 @@
     <title>D-Card || {{customerName}}</title>
     <!-- Adding icons library -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+			<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+
     <!-- Adding local style sheet -->
     <link rel="stylesheet" href="{{ url_for('.static', filename='css/profiles.css') }}">
     <!-- to adapt content position accoding to screen size-->
@@ -14,6 +16,32 @@
 
 <body>
     <div class="bg">
+    	<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    		<!-- https://getbootstrap.com/docs/4.0/components/navbar/ -->
+			<a class="navbar-brand" href="#">DC^2</a>
+
+			<div class="collapse navbar-collapse" id="navbarSupportedContent">
+			<ul class="navbar-nav mr-auto">
+			  <li class="nav-item active">
+			    <a class="nav-link" href={{home_addr}}>Home <span class="sr-only">(current)</span></a>
+			  </li>
+
+			  <li class="nav-item">
+			    <a class="nav-link" href={{signin_addr}}>Sign in</a>
+			  </li>
+
+			  <li class="nav-item">
+			  	<a class="nav-link" href={{signup_addr}}>Sign up</a>
+			    <!--a class="nav-link disabled" href="#">Sign up</a>  To disable an icon-->
+			  </li>
+			</ul>
+			<!-- TODO -->
+			<form class="form-inline my-2 my-lg-0">
+			  <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+			  <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+			</form>
+			</div>
+		</nav>
 
         <div class="Profile">
                 <div class="ProfilePhoto">
@@ -28,13 +56,13 @@
                 <table id="ProfileTable">
                     <!--<caption>{{customerName}}</caption>-->
                     <thead>
-                        <tr>
+                        <tr class="TableRow">
                             <th><a href={{fb_addr}} class="fa fa-facebook">  | Facebook</a></th>        
                         </tr>
-                        <tr>
+                        <tr class="TableRow">
                             <th><a href={{linkdin_addr}} class="fa fa-linkedin"> | LinkedIn</a> </th>
                         </tr>
-                        <tr>
+                        <tr class="TableRow">
                             <th><a href={{ig_addr}} class="fa fa-instagram"><span  style="color:white"> | Instagram</span></a> </th>
                         </tr>
                     </thead>

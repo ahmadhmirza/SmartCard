@@ -2,6 +2,18 @@
  * This is the CSS stylesheet for the UserProfile.html page
  */
 
+ .Profile {
+    max-width: 210px;
+    margin: auto;
+    font-size: 15px;
+}
+.ProfilePhoto {
+    text-align: center;
+}
+.CustomerName{
+    text-align: center;
+}
+
 /* Following two tags combined to make the background image scalable*/
 body, html {
   height: 100%;
@@ -19,15 +31,7 @@ body, html {
   background-repeat: no-repeat;
   background-size: cover;
 }
-
- .Profile {
-    max-width: 210px;
-    margin: auto;
-    font-size: 15px;
-    padding: 15px;
-}
-.ProfilePhoto {
-    text-align: center;
+/* -------------------------------------- */
 }
 .ProfilePhoto img {
   border-radius: 50%;
@@ -39,28 +43,21 @@ body, html {
   text-align: center;
 }
 
-/* -------------------------------------- */
-
 .fa {
-padding: 15px;
+padding: 10px;
 font-size: 20px;
-width: 220px;
-height: 60px;
-line-height: 30px;
+width: 210px;
+height: 25px;
 text-align: left;
-
+line-height: 20px;
 text-decoration: none;
 }
 
-th, td {
-  border-bottom: 10px solid #ddd;
-}
 .fa:hover {
     opacity: 0.7;
 }
 
 .fa-facebook {
-  padding: 15px;
   background: #3B5998;
   color: white;
 }
