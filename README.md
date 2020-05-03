@@ -30,4 +30,4 @@ DigitalContactCard project using Flask Framework
 #### Version 1.0 :
  - [ ] Deploy app to aws.
 
-> This is a personal project that I am doing to explore back and front-end development using Flask,jinja,html and css. 
+> This is a personal project that I am doing to explore back and front-end development using Flask, jinja, html and css. 
