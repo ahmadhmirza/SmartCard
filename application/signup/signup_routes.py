@@ -157,7 +157,11 @@ def home():
                 #return redirect(url_for('signup_bp.home'))
             else:
                 print("ERROR: Signup: Form data validation failed.")
-        return render_template("form.html",form = signupForm)
+        return render_template("form.html",form = signupForm,
+                                home_addr=url_for("home_bp.home"),
+                                signin_addr= url_for("home_bp.home"),
+                                signup_addr= url_for("signup_bp.home")
+                                )
     else:
         welcomeString = "ERROR : INIT FAILED : SignUp "
         res = make_response(welcomeString,500)
